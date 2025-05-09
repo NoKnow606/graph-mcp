@@ -123,6 +123,6 @@ def get_charts_data(dashboard_uuid, parameters=None):
 
 # Run the server
 if __name__ == "__main__":
-    result = get_dashboard_data(dashboard_url="https://www.footprint.network/@Traevon/Pixels-Mockup#type=dashboard")
-    print(result)
-    # mcp.run()
+    # result = get_dashboard_data(dashboard_url="https://www.footprint.network/@Traevon/Pixels-Mockup#type=dashboard")
+    # print(result)
+    mcp.run()
