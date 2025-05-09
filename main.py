@@ -28,8 +28,7 @@ def get_dashboard_data(dashboard_url: str) -> str:
     
     Args:
         dashboard_url: URL of the Footprint Network dashboard (e.g., https://www.footprint.network/@Higi/Sui-Bridge)
-        api_token: Your Footprint Network API token (optional if set in environment variables)
-    
+
     Returns:
         JSON string containing all chart data from the dashboard
     """
@@ -124,4 +123,4 @@ def get_charts_data(dashboard_uuid, parameters=None):
 if __name__ == "__main__":
     # result = get_dashboard_data(dashboard_url="https://www.footprint.network/@Traevon/Pixels-Mockup#type=dashboard")
     # print(result)
-    mcp.run(transport="sse")
+    mcp.run()
