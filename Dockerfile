@@ -10,14 +10,12 @@ RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev python3-dev
 # Upgrade pip
 RUN pip install --upgrade pip
 
-# Install Python dependencies
-RUN pip install "mcp[cli]>=1.4.1" pandas>=2.2.3 httpx python-dotenv
-
 # Copy project files
 COPY . .
 
-# Environment variable placeholder
-ENV DUNE_API_KEY=""
+# Install Python dependencies
+RUN pip install  --no-cache -r requirements.lock
+
 
 # Default command
 CMD ["python", "main.py"]
