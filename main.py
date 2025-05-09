@@ -19,11 +19,11 @@ DATA_API_URL = "https://vip.footprint.network/api/v1/dataApi/dashcard/data"
 mcp = FastMCP(
     name="Footprint Network Dashboard MCP",
     description="Retrieve raw data from Footprint Network dashboards",
-    dependencies=["httpx", "pandas", "python-dotenv"]
+    dependencies=["httpx", "pandas", "python-dotenv"],
 )
 
 @mcp.tool()
-def get_dashboard_data(dashboard_url: str, api_token: str = None) -> str:
+def get_dashboard_data(dashboard_url: str) -> str:
     """Get raw data from a Footprint Network dashboard and return as JSON string
     
     Args:
@@ -59,10 +59,9 @@ def get_dashboard_data(dashboard_url: str, api_token: str = None) -> str:
         
         # Get chart data
         charts_data = get_charts_data(uuid, parameters)
-        print(charts_data)
-        
+
         # Return as JSON string
-        return json.dumps({"charts": charts_data}, indent=2)
+        return json.dumps({"charts": charts_data})
     except Exception as e:
         return f"Error processing dashboard data: {str(e)}"
 
@@ -84,7 +83,7 @@ def get_dashboard_uuid(username, dashboard_name):
         "userName": username
     }
     print(payload)
-    
+
     try:
         with httpx.Client() as client:
             response = client.post(url, headers=headers, json=payload, timeout=60)
@@ -125,4 +124,4 @@ def get_charts_data(dashboard_uuid, parameters=None):
 if __name__ == "__main__":
     # result = get_dashboard_data(dashboard_url="https://www.footprint.network/@Traevon/Pixels-Mockup#type=dashboard")
     # print(result)
-    mcp.run()
+    mcp.run(transport="sse")
