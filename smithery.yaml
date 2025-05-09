@@ -8,3 +8,7 @@ startCommand:
     # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
     |-
     (config) => ({ command: 'python', args: ['main.py'] })
+
+  build:
+    dockerfile: Dockerfile
+    dockerBuildPath: .
