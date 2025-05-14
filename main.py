@@ -377,9 +377,8 @@ def run_curl_command(url, data, is_json=True, use_proxy=True):
             ]
 
             # 如果使用代理，添加代理参数
-            if use_proxy:
-                cmd.extend(['--proxy', os.getenv(), '--proxy-user',
-                            'brd-customer-hl_2a750fda-zone-datacenter_proxy:5hgjsl3k0mjy'])
+            if use_proxy and os.getenv('IP_PROXY') and os.getenv('IP_PROXY_USER'):
+                cmd.extend(['--proxy', os.getenv("IP_PROXY"), '--proxy-user', os.getenv('IP_PROXY_USER')])
                 # proxy = proxy_pool.get_proxy()
                 # if proxy:
                 #     # 提取代理地址和端口
@@ -608,7 +607,7 @@ def process_visualization(visualization):
 
 def get_dune_chart_data(url: str) -> str:
     parsed_url = urlparse(url)
-    query_id = parsed_url.path.strip('/')[2]
+    query_id = parsed_url.path.split('/')[2]
     parameters = []
     logger.info(f"Getting execution ID for query {query_id}...")
     execution_id = get_execution_id(query_id, parameters)
@@ -878,6 +877,7 @@ def get_data(url: str) -> str:
 
 # Run the server
 if __name__ == "__main__":
+    # print(get_data("https://dune.com/adam_tehc/memecoin-wars"))
     # result = get_dashboard_data(dashboard_url="https://www.footprint.network/@Traevon/Pixels-Mockup#type=dashboard")
     # print(result)
     mcp.run()
