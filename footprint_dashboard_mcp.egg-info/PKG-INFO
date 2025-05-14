@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: footprint-dashboard-mcp
+Version: 0.1.0
+Summary: A mcp server that bridges footprint dashboard data to AI agents.
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: mcp[cli]>=1.4.1
+Requires-Dist: pandas>=2.2.3
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: python-dotenv>=1.1.0
+Requires-Dist: requests>=2.32.3
+Requires-Dist: structlog>=25.3.0
+Requires-Dist: beautifulsoup4>=4.13.4
+Dynamic: license-file

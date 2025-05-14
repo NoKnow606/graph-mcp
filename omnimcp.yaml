@@ -4,10 +4,20 @@ startCommand:
   type: stdio
   configSchema:
     type: object
+    properties:
+      IP_PROXY:
+        type: string
+        title: "IP Proxy"
+        description: ""
+      IP_PROXY_USER:
+        type: string
+        title: "IP Proxy User"
+        description: ""
+
   commandFunction:
     # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
     |-
-    (config) => ({ command: 'python', args: ['main.py'] })
+    (config) => ({ command: 'python', env: {IP_PROXY: config.IP_PROXY, IP_PROXY_USER: config.IP_PROXY_USER}})
 
   build:
     dockerfile: Dockerfile
