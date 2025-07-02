@@ -340,7 +340,7 @@ class FreeProxyPool:
 # logger.info("[Proxy Pool] Starting proxy pool in background...")
 # proxy_pool.initialize_in_background()
 
-def run_curl_command(url, data, is_json=True, use_proxy=True):
+def run_curl_command(url, data, is_json=True, use_proxy=False):
     """
     Run a curl command to make an HTTP request.
 
@@ -421,6 +421,7 @@ def run_curl_command(url, data, is_json=True, use_proxy=True):
             # 执行curl
             result = subprocess.run(cmd, capture_output=True, text=True)
 
+
             if result.returncode != 0:
                 logger.info(f"Curl command failed with return code {result.returncode}: {result.stderr}")
                 if use_proxy:
@@ -429,6 +430,7 @@ def run_curl_command(url, data, is_json=True, use_proxy=True):
 
             try:
                 json_response = json.loads(result.stdout)
+                logger.info("Curl Result", result=json_response)
                 return json_response
             except json.JSONDecodeError:
                 logger.error(f"Invalid JSON response: {result.stdout[:100]}...")
@@ -493,6 +495,7 @@ def fetch_dashboard_info(handle, slug):
 
     response = run_curl_command(GRAPHQL_API, dashboard_query)
 
+
     if not response:
         return None
 
@@ -517,7 +520,7 @@ def get_execution_id(query_id, parameters):
     execution_query = {
         "operationName": "GetLatestResultSetIds",
         "variables": {
-            "queryId": query_id,
+            "queryId": int(query_id),
             "parameters": parameters,
             "canRefresh": True
         },
@@ -547,7 +550,7 @@ def fetch_chart_data(execution_id, query_id, parameters, columns: Optional[list]
     """
     chart_data_query = {
         "execution_id": execution_id,
-        "query_id": query_id,
+        "query_id": int(query_id),
         "parameters": parameters,
         "sampling": {"count": 8000}
     }
@@ -578,6 +581,7 @@ def process_visualization(visualization):
 
     query_id = query_details.get('query_id')
     parameters = query_details.get('parameters', [])
+    name = query_details.get('name', [])
 
     if not query_id:
         return None
@@ -603,7 +607,7 @@ def process_visualization(visualization):
     if column_mapping:
         columns = list(column_mapping.keys())
 
-    return query_id, parameters, options, columns, viz_info
+    return query_id, name, parameters, options, columns, viz_info
 
 def get_dune_chart_data(url: str) -> str:
     parsed_url = urlparse(url)
@@ -661,7 +665,7 @@ def get_dune_dashboard_data(url: str) -> str:
             if not processed_data:
                 continue
 
-            query_id, parameters, options, columns, viz_info = processed_data
+            query_id, name,parameters, options, columns, viz_info = processed_data
 
             # Step 4: Get execution ID for the query
             logger.info(f"Getting execution ID for query {query_id}...")
@@ -737,7 +741,7 @@ def get_footprint_chart_data(chart_url: str) -> str:
             response = client.get(url, timeout=60)
             response.raise_for_status()
             data = response.json()
-            
+
             # Extract columns and rows from response
             columns = [item.get("display_name") for item in data.get("data", {}).get("cols", [])]
             rows = data.get("data", {}).get("rows", [])
@@ -858,7 +862,7 @@ def get_data(url: str) -> str:
     """Get raw data from a graph (eg: dashboard, chart) and return as JSON string
 
        Args:
-           url: URL of the graph (e.g., https://www.footprint.network/@Higi/Sui-Bridge?type=chart)
+           url: URL of the graph (e.g., https://www.footprint.network/guest/chart/Total-Pet-Minted-fp-e9135cea-f9cd-4c59-8371-b3078c9b1bbe)
 
        Returns:
            JSON string containing all chart data from the graph
@@ -877,9 +881,4 @@ def get_data(url: str) -> str:
 
 # Run the server
 if __name__ == "__main__":
-    # print(get_data("https://dune.com/adam_tehc/memecoin-wars"))
-    # result = get_dashboard_data(dashboard_url="https://www.footprint.network/@Traevon/Pixels-Mockup#type=dashboard")
-    # print(result)
     mcp.run()
-    # result = get_footprint_chart_data("https://www.footprint.network/guest/chart/Total-Pet-Minted-fp-e9135cea-f9cd-4c59-8371-b3078c9b1bbe")
-    # print(result)
