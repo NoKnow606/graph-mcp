@@ -1,9 +1,0 @@
-LICENSE
-README.md
-main.py
-pyproject.toml
-footprint_dashboard_mcp.egg-info/PKG-INFO
-footprint_dashboard_mcp.egg-info/SOURCES.txt
-footprint_dashboard_mcp.egg-info/dependency_links.txt
-footprint_dashboard_mcp.egg-info/requires.txt
-footprint_dashboard_mcp.egg-info/top_level.txt

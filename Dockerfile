@@ -7,6 +7,15 @@ WORKDIR /app
 # Install build dependencies
 RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev python3-dev
 
+RUN git clone https://github.com/lwthiker/curl-impersonate.git && \
+    cd curl-impersonate && \
+    mkdir -p build && cd build && \
+    ../configure && \
+    make chrome-build && \
+    make chrome-install && \
+    ldconfig && \
+    cd ../.. && rm -rf curl-impersonate
+
 # Upgrade pip
 RUN pip install --upgrade pip
 
