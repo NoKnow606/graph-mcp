@@ -7,6 +7,27 @@ WORKDIR /app
 # Install build dependencies
 RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev python3-dev
 
+RUN apt-get update && apt-get install -y \
+    curl \
+    vim \
+    git \
+    bash \
+    build-essential \
+    libssl-dev \
+    libnghttp2-dev \
+    zlib1g-dev \
+    autoconf \
+    automake \
+    libtool \
+    cmake \
+    golang \
+    ninja-build \
+    perl \
+    wget \
+    unzip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN git clone https://github.com/lwthiker/curl-impersonate.git && \
     cd curl-impersonate && \
     mkdir -p build && cd build && \
