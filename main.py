@@ -359,7 +359,7 @@ def run_curl_command(url, data, is_json=True, use_proxy=False):
         try:
             # 创建基本curl命令
             cmd = [
-                'curl-impersonate-chrome', url,
+                'curl', url,
                 '-H', 'accept: */*',
                 '-H', 'accept-language: zh-CN,zh;q=0.9',
                 '-b', DUNE_COOKIES,
